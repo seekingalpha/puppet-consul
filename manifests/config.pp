@@ -110,7 +110,11 @@ class consul::config (
         }
       }
       default: {
-        fail("I don't know how to create an init script for style ${consul::init_style_real}")
+#        fail("I don't know how to create an init script for style ${consul::init_style_real}")
+        systemd::unit_file { 'consul.service':
+          content => template('consul/consul.systemd.erb'),
+          notify  => $notify_service,
+        }
       }
     }
   }
